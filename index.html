@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Cybersecurity & AI Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & VARIABLES ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #050A0F;
+      --bg2:       #080F17;
+      --surface:   #0D1720;
+      --surface2:  #112030;
+      --border:    #1A3048;
+      --accent:    #00C2FF;
+      --accent2:   #00FF9D;
+      --accent3:   #FF4D6D;
+      --text:      #E8F4F8;
+      --text2:     #7FA8C0;
+      --text3:     #3D6478;
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ─────────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── SCROLLBAR ─────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ── NAV ───────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(5, 10, 15, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text2);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ── GRID BACKGROUND ───────────────────────────────────────────── */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,194,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,194,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── SECTIONS ──────────────────────────────────────────────────── */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    /* ── HERO ──────────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 8rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px; height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-name {
+      font-family: var(--font-head);
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.35s;
+    }
+
+    .hero-name span {
+      display: block;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 600;
+      color: var(--text2);
+      margin-bottom: 2rem;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.5s;
+    }
+
+    .hero-title .sep { color: var(--accent3); margin: 0 0.6rem; }
+
+    .hero-bio {
+      max-width: 580px;
+      color: var(--text2);
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.65s;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.8s;
+    }
+
+    .btn-primary {
+      padding: 0.85rem 2rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      padding: 0.85rem 2rem;
+      background: transparent;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      cursor: pointer;
+      transition: all 0.2s;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+
+    .btn-outline:hover {
+      background: rgba(0,194,255,0.1);
+      transform: translateY(-2px);
+    }
+
+    /* visitor counter in hero */
+    .visitor-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 3rem;
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text2);
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 1s;
+    }
+
+    .visitor-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--accent2);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .visitor-count { color: var(--accent2); font-weight: 500; }
+
+    /* ── SECTION HEADERS ───────────────────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* ── ABOUT ─────────────────────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--text2);
+      margin-bottom: 1.25rem;
+      line-height: 1.8;
+      font-size: 0.97rem;
+    }
+
+    .about-text p strong { color: var(--text); font-weight: 500; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-card {
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+    }
+
+    .stat-card:nth-child(2)::before { background: var(--accent2); }
+    .stat-card:nth-child(3)::before { background: var(--accent3); }
+    .stat-card:nth-child(4)::before { background: #9B5DE5; }
+
+    .stat-card:hover { border-color: var(--accent); }
+
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-card:nth-child(2) .stat-num { color: var(--accent2); }
+    .stat-card:nth-child(3) .stat-num { color: var(--accent3); }
+    .stat-card:nth-child(4) .stat-num { color: #9B5DE5; }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── SKILLS TAGS ───────────────────────────────────────────────── */
+    .skills-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 2rem;
+    }
+
+    .skill-tag {
+      padding: 0.35rem 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      background: var(--surface);
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .skill-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,194,255,0.05);
+    }
+
+    .skill-tag.green:hover { border-color: var(--accent2); color: var(--accent2); background: rgba(0,255,157,0.05); }
+    .skill-tag.red:hover { border-color: var(--accent3); color: var(--accent3); background: rgba(255,77,109,0.05); }
+
+    /* ── EXPERIENCE ────────────────────────────────────────────────── */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, var(--accent), var(--border), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 3.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.35rem; top: 0.35rem;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .timeline-item:nth-child(2)::before { background: var(--accent2); box-shadow: 0 0 12px var(--accent2); }
+    .timeline-item:nth-child(3)::before { background: var(--accent3); box-shadow: 0 0 12px var(--accent3); }
+
+    .job-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .job-title {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .job-date {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .job-company {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text3);
+      letter-spacing: 0.05em;
+      margin-bottom: 1.25rem;
+    }
+
+    .job-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .job-bullets li {
+      position: relative;
+      padding-left: 1.25rem;
+      color: var(--text2);
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .job-bullets li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.75rem;
+      top: 0.15rem;
+    }
+
+    /* ── EDUCATION ─────────────────────────────────────────────────── */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .edu-card {
+      padding: 1.75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .edu-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .edu-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .edu-card:hover::after { transform: scaleX(1); }
+
+    .edu-icon {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .edu-degree {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .edu-school {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem;
+    }
+
+    .edu-year {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text3);
+    }
+
+    /* ── CERTS ─────────────────────────────────────────────────────── */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .cert-card {
+      padding: 1.25rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.25s;
+      cursor: default;
+    }
+
+    .cert-card:hover {
+      border-color: var(--accent2);
+      background: var(--surface2);
+      transform: translateX(4px);
+    }
+
+    .cert-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent2);
+      flex-shrink: 0;
+      box-shadow: 0 0 8px var(--accent2);
+    }
+
+    .cert-dot.blue { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+    .cert-dot.red { background: var(--accent3); box-shadow: 0 0 8px var(--accent3); }
+    .cert-dot.purple { background: #9B5DE5; box-shadow: 0 0 8px #9B5DE5; }
+
+    .cert-name {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text2);
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+    }
+
+    /* ── PROJECTS ──────────────────────────────────────────────────── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      padding: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,194,255,0.08);
+    }
+
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .project-name {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+
+    .project-desc {
+      font-size: 0.88rem;
+      color: var(--text2);
+      line-height: 1.7;
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-tag {
+      padding: 0.2rem 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
+      background: rgba(0,194,255,0.08);
+      border: 1px solid rgba(0,194,255,0.2);
+      color: var(--accent);
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text3);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+      margin-top: auto;
+    }
+
+    .project-link:hover { color: var(--accent); }
+
+    .project-link svg {
+      width: 14px; height: 14px;
+      transition: transform 0.2s;
+    }
+
+    .project-link:hover svg { transform: translate(2px, -2px); }
+
+    /* ── CONTACT ───────────────────────────────────────────────────── */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .contact-text h3 {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .contact-text h3 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .contact-text p {
+      color: var(--text2);
+      font-size: 0.97rem;
+      line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text2);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      transition: all 0.25s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateX(6px);
+    }
+
+    .contact-link-icon {
+      width: 18px; height: 18px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .location-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text3);
+      letter-spacing: 0.06em;
+      margin-bottom: 1.5rem;
+    }
+
+    .location-badge::before {
+      content: '◉';
+      color: var(--accent2);
+      animation: pulse 2s infinite;
+    }
+
+    /* ── FOOTER ────────────────────────────────────────────────────── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text3);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-right {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text3);
+    }
+
+    .footer-right span { color: var(--accent); }
+
+    /* ── ANIMATIONS ────────────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100vh); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── SCANLINE EFFECT ───────────────────────────────────────────── */
+    .scanline {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0,194,255,0.15), transparent);
+      animation: scanline 8s linear infinite;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* ── RESPONSIVE ────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      section { padding: 4rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-wrapper { grid-template-columns: 1fr; gap: 2rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid-bg"></div>
+  <div class="scanline"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">// portfolio.sys</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-eyebrow">Available for opportunities</div>
+    <h1 class="hero-name">
+      Your Name<span>Here.</span>
+    </h1>
+    <p class="hero-title">
+      Cybersecurity Professional
+      <span class="sep">×</span>
+      AI Operations Consultant
+      <span class="sep">×</span>
+      Developer
+    </p>
+    <p class="hero-bio">
+      MSc Information Security · Developer turned security practitioner · 
+      Building at the intersection of AI operations, cloud security, and 
+      threat detection. Based in Nairobi, Kenya. Open to SOC Analyst, 
+      Security Engineer, and AI Operations roles globally.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-outline">Get In Touch</a>
+    </div>
+    <div class="visitor-badge">
+      <span class="dot"></span>
+      <span>Site visitors:</span>
+      <span class="visitor-count" id="visitor-count">0</span>
+      <span style="color:var(--text3); font-size:0.65rem;">// counter connects in Phase 3</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header fade-in">
+      <span class="section-num">01</span>
+      <h2 class="section-title">About</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <p>
+          I come to cybersecurity from an unusual angle — and I think that's exactly what makes me useful. 
+          My foundation is technical: a <strong>BSc in Business Information Technology</strong> and an 
+          <strong>MSc in Information Security</strong>, built on years of hands-on software development, 
+          IT administration, and operational project management.
+        </p>
+        <p>
+          As a developer, I learned how vulnerabilities get introduced at the build stage. 
+          As a technical support specialist, I built incident triage instincts under pressure. 
+          As a project manager in transport and logistics, I ran <strong>digital transformation</strong>, 
+          risk assessments, and scaled operations to 300+ clients — giving me a business-level 
+          understanding of where security risk actually lives.
+        </p>
+        <p>
+          I'm now channelling all of that into security operations and AI automation — 
+          pursuing <strong>AZ-900</strong> and <strong>SC-200</strong> certifications, 
+          building hands-on lab environments, and launching an AI operations practice 
+          for East African SMEs.
+        </p>
+        <div class="skills-cloud">
+          <span class="skill-tag">Threat Detection</span>
+          <span class="skill-tag">SIEM / Wazuh</span>
+          <span class="skill-tag">Microsoft Sentinel</span>
+          <span class="skill-tag blue">Azure Cloud</span>
+          <span class="skill-tag blue">Docker</span>
+          <span class="skill-tag blue">Linux</span>
+          <span class="skill-tag green">Python</span>
+          <span class="skill-tag green">Laravel / PHP</span>
+          <span class="skill-tag green">Vue.js</span>
+          <span class="skill-tag red">OpenClaw</span>
+          <span class="skill-tag red">AI Agents</span>
+          <span class="skill-tag red">Prompt Engineering</span>
+          <span class="skill-tag">Risk Assessment</span>
+          <span class="skill-tag">Incident Response</span>
+          <span class="skill-tag">KQL</span>
+          <span class="skill-tag">Google Workspace Admin</span>
+        </div>
+      </div>
+      <div class="about-stats fade-in">
+        <div class="stat-card">
+          <div class="stat-num">300+</div>
+          <div class="stat-label">Clients Scaled From Zero</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Apps Built & Deployed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Industries Worked In</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">MSc</div>
+          <div class="stat-label">Information Security</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-header fade-in">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Experience</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="timeline">
+
+      <div class="timeline-item fade-in">
+        <div class="job-header">
+          <div class="job-title">Project Manager</div>
+          <div class="job-date">2022 — Present</div>
+        </div>
+        <div class="job-company">Transport & Logistics Company · Nairobi, Kenya</div>
+        <ul class="job-bullets">
+          <li>Spearheaded digital transformation of student payment tracking — migrating manual processes to an automated system, improving payment visibility across 300+ accounts and materially reducing reconciliation time.</li>
+          <li>Grew client base from zero to 300+ active customers within 2 years, managing onboarding workflows, customer data systems, and service delivery at scale.</li>
+          <li>Conducted operational risk assessments across logistics workflows — identifying process vulnerabilities, data handling gaps, and third-party dependency risks as part of broader digital transformation planning.</li>
+          <li>Coordinated cross-functional team of drivers and dispatchers, establishing communication protocols, scheduling systems, and escalation procedures that reduced operational delays and improved response times.</li>
+          <li>Designed and implemented budget controls sustaining cost efficiency through a 300+ customer growth phase, tracking expenditure against KPIs and flagging variance risks to senior stakeholders.</li>
+          <li>Built and maintained operational dashboards monitoring KPIs across routing, capacity, and customer service — translating real-time data into actionable adjustments that improved service reliability.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="job-header">
+          <div class="job-title">Technical Support Specialist & IT Administrator</div>
+          <div class="job-date">2021 — 2022</div>
+        </div>
+        <div class="job-company">Transport & Logistics Company · Nairobi, Kenya</div>
+        <ul class="job-bullets">
+          <li>Administered end-to-end IT infrastructure — managing network reliability, system uptime, and internal technical support across a cross-functional team.</li>
+          <li>Managed and configured company-wide Google Workspace environment — overseeing user provisioning, access controls, permissions management, and security settings across all staff accounts.</li>
+          <li>Owned and maintained the company WordPress website — handling updates, plugin management, uptime monitoring, and content deployment aligned to business needs.</li>
+          <li>Led hardware procurement — evaluating vendor options, managing specifications against operational requirements, and ensuring cost-effective acquisition within budget controls.</li>
+          <li>Implemented and maintained a company-wide IT asset tracking system — ensuring accurate records to support audit readiness and resource planning.</li>
+          <li>Applied information security principles across all IT administration duties — including access control management, user offboarding procedures, and patch discipline to minimise organisational risk.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="job-header">
+          <div class="job-title">Junior Software Engineer</div>
+          <div class="job-date">2019 — 2021</div>
+        </div>
+        <div class="job-company">Software Development · Nairobi, Kenya</div>
+        <ul class="job-bullets">
+          <li>Engineered a Wi-Fi marketing platform integrating Laravel with Mikrotik network hardware — enabling captive portal authentication, user session management, and marketing data capture across network access points.</li>
+          <li>Developed a full-stack financial transactions platform using Laravel, Vue.js, and Stripe API — implementing secure payment flows, transaction logging, and user account management.</li>
+          <li>Built and maintained a cloud-based Point of Sale system — delivering full development lifecycle from build to deployment with ongoing technical support for business-critical operations.</li>
+          <li>Developed a full-stack vehicle listings platform using Laravel and Vue.js — implementing user authentication, listing management, and admin content moderation.</li>
+          <li>Applied application security principles across multiple builds — including secure payment integration, network authentication, session management, and input validation aligned with the OWASP threat landscape.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION & CERTS -->
+  <section id="education">
+    <div class="section-header fade-in">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Education & Certifications</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="edu-grid fade-in" style="margin-bottom: 3rem;">
+      <div class="edu-card">
+        <div class="edu-icon">🎓</div>
+        <div class="edu-degree">MSc Information Security</div>
+        <div class="edu-school">University Name</div>
+        <div class="edu-year">Graduated 202X</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon">🎓</div>
+        <div class="edu-degree">BSc Business Information Technology</div>
+        <div class="edu-school">University Name</div>
+        <div class="edu-year">Graduated 202X</div>
+      </div>
+    </div>
+
+    <div class="certs-grid fade-in">
+      <div class="cert-card">
+        <div class="cert-dot blue"></div>
+        <div class="cert-name">Microsoft AZ-900<br>Azure Fundamentals <span style="color:var(--text3);font-size:0.65rem;">— In Progress</span></div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot blue"></div>
+        <div class="cert-name">Microsoft SC-200<br>Security Operations Analyst <span style="color:var(--text3);font-size:0.65rem;">— In Progress</span></div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div class="cert-name">Fortinet NSE 1–3<br>Network Security</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div class="cert-name">Cisco Linux Essentials<br>Linux Fundamentals</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot purple"></div>
+        <div class="cert-name">Anthropic AI Fluency<br>AI Literacy & Operations</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot red"></div>
+        <div class="cert-name">MD-102: Endpoint Management<br>Microsoft Learn</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div class="cert-name">Forage — Mastercard<br>Cybersecurity Simulation</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div class="cert-name">Forage — DLA Piper<br>Legal Technology Simulation</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div class="cert-name">Forage — Tata Consultancy<br>IT Consulting Simulation</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div class="cert-name">Forage — HPE<br>Enterprise Tech Simulation</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-header fade-in">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Projects</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card fade-in">
+        <div class="project-num">PROJECT_01</div>
+        <div class="project-name">Azure Cloud Resume Challenge</div>
+        <p class="project-desc">Personal portfolio hosted entirely on Azure — static site on Blob Storage, HTTPS via Azure CDN, custom domain, visitor counter powered by Azure Functions + CosmosDB, with full CI/CD via GitHub Actions.</p>
+        <div class="project-tags">
+          <span class="project-tag">Azure Blob Storage</span>
+          <span class="project-tag">Azure Functions</span>
+          <span class="project-tag">CosmosDB</span>
+          <span class="project-tag">GitHub Actions</span>
+        </div>
+        <a href="https://github.com/yourusername" class="project-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          View on GitHub ↗
+        </a>
+      </div>
+
+      <div class="project-card fade-in">
+        <div class="project-num">PROJECT_02</div>
+        <div class="project-name">Azure Honeypot & Attack Map</div>
+        <p class="project-desc">Deployed a deliberately exposed VM on Azure, collected real-world attack telemetry using Microsoft Sentinel and Log Analytics, and visualised global attack origins on an interactive threat map using KQL queries.</p>
+        <div class="project-tags">
+          <span class="project-tag">Microsoft Sentinel</span>
+          <span class="project-tag">Log Analytics</span>
+          <span class="project-tag">KQL</span>
+          <span class="project-tag">Azure VMs</span>
+        </div>
+        <a href="https://github.com/yourusername" class="project-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          View on GitHub ↗
+        </a>
+      </div>
+
+      <div class="project-card fade-in">
+        <div class="project-num">PROJECT_03</div>
+        <div class="project-name">SIEM Home Lab — Wazuh</div>
+        <p class="project-desc">Built a personal SIEM environment using Wazuh on a Linux VPS — connected multiple endpoint agents, generated real security events, wrote custom detection rules, and documented incident response workflows.</p>
+        <div class="project-tags">
+          <span class="project-tag">Wazuh</span>
+          <span class="project-tag">Ubuntu Server</span>
+          <span class="project-tag">Kali Linux</span>
+          <span class="project-tag">Detection Rules</span>
+        </div>
+        <a href="https://github.com/yourusername" class="project-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          View on GitHub ↗
+        </a>
+      </div>
+
+      <div class="project-card fade-in">
+        <div class="project-num">PROJECT_04</div>
+        <div class="project-name">AI Security Alert Triage Agent</div>
+        <p class="project-desc">Built an OpenClaw agent that ingests SIEM alerts, uses Claude AI to analyse and prioritise them, filters false positives, and delivers a daily threat digest with severity ratings via Telegram — sitting at the intersection of AI ops and security operations.</p>
+        <div class="project-tags">
+          <span class="project-tag">OpenClaw</span>
+          <span class="project-tag">Claude API</span>
+          <span class="project-tag">Wazuh API</span>
+          <span class="project-tag">Telegram Bot</span>
+          <span class="project-tag">Python</span>
+        </div>
+        <a href="https://github.com/yourusername" class="project-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          View on GitHub ↗
+        </a>
+      </div>
+
+      <div class="project-card fade-in">
+        <div class="project-num">PROJECT_05</div>
+        <div class="project-name">Wi-Fi Captive Portal Platform</div>
+        <p class="project-desc">Engineered a Wi-Fi marketing platform integrating Laravel with Mikrotik RouterOS — implementing captive portal authentication, user session management, and network access control across multiple access points.</p>
+        <div class="project-tags">
+          <span class="project-tag">Laravel</span>
+          <span class="project-tag">Mikrotik RouterOS</span>
+          <span class="project-tag">PHP</span>
+          <span class="project-tag">MySQL</span>
+        </div>
+        <a href="https://github.com/yourusername" class="project-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          View on GitHub ↗
+        </a>
+      </div>
+
+      <div class="project-card fade-in">
+        <div class="project-num">PROJECT_06</div>
+        <div class="project-name">Secure Financial Transactions Platform</div>
+        <p class="project-desc">Full-stack payment platform built with Laravel, Vue.js, and Stripe API — with secure payment flows, transaction logging, and user account management. Implemented OWASP-aligned input validation and secure API key handling throughout.</p>
+        <div class="project-tags">
+          <span class="project-tag">Laravel</span>
+          <span class="project-tag">Vue.js</span>
+          <span class="project-tag">Stripe API</span>
+          <span class="project-tag">OWASP</span>
+        </div>
+        <a href="https://github.com/yourusername" class="project-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          View on GitHub ↗
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header fade-in">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Contact</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-wrapper">
+      <div class="contact-text fade-in">
+        <div class="location-badge">Nairobi, Kenya · Open to Remote</div>
+        <h3>Let's build something<br><span>worth securing.</span></h3>
+        <p>
+          Open to SOC Analyst, Security Engineer, and AI Operations roles. 
+          Also available for cybersecurity consulting, AI workflow automation, 
+          and speaking with teams building in East Africa.
+        </p>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+          <a href="mailto:your@email.com" class="btn-primary">Send an Email</a>
+          <a href="https://linkedin.com/in/yourprofile" class="btn-outline" target="_blank">LinkedIn</a>
+        </div>
+      </div>
+      <div class="contact-links fade-in">
+        <a href="mailto:your@email.com" class="contact-link">
+          <svg class="contact-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          your@email.com
+        </a>
+        <a href="https://linkedin.com/in/yourprofile" class="contact-link" target="_blank">
+          <svg class="contact-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          linkedin.com/in/yourprofile
+        </a>
+        <a href="https://github.com/yourusername" class="contact-link" target="_blank">
+          <svg class="contact-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          github.com/yourusername
+        </a>
+        <a href="https://tryhackme.com/p/yourprofile" class="contact-link" target="_blank">
+          <svg class="contact-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+          TryHackMe Profile
+        </a>
+        <a href="https://www.credly.com/users/yourprofile" class="contact-link" target="_blank">
+          <svg class="contact-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+          Credly Badges
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">© 2026 · Built with HTML / CSS / JS · Deployed on <span style="color:var(--accent)">Azure</span></div>
+    <div class="footer-right">Visitors: <span id="footer-count">0</span></div>
+  </footer>
+
+  <script>
+    // ── SCROLL ANIMATIONS ───────────────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, entry.target.dataset.delay || 0);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach((el, i) => {
+      el.dataset.delay = (i % 4) * 100;
+      observer.observe(el);
+    });
+
+    // ── VISITOR COUNTER PLACEHOLDER ─────────────────────────────────
+    // Phase 3: Replace this with real Azure Function call
+    // fetch('https://YOUR-FUNCTION.azurewebsites.net/api/HttpTrigger')
+    //   .then(r => r.json())
+    //   .then(data => {
+    //     document.getElementById('visitor-count').textContent = data.count;
+    //     document.getElementById('footer-count').textContent = data.count;
+    //   });
+
+    // Placeholder display
+    document.getElementById('visitor-count').textContent = '—';
+    document.getElementById('footer-count').textContent = '—';
+
+    // ── ACTIVE NAV HIGHLIGHT ────────────────────────────────────────
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        if (window.scrollY >= section.offsetTop - 200) {
+          current = section.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === `#${current}`
+          ? 'var(--accent)'
+          : '';
+      });
+    });
+
+    // ── TYPING EFFECT ON HERO NAME ──────────────────────────────────
+    // Optional: uncomment to enable typing effect
+    // const nameEl = document.querySelector('.hero-name');
+  </script>
+</body>
+</html>
