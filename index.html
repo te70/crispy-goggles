@@ -870,7 +870,7 @@
   <section id="hero">
     <div class="hero-eyebrow">Available for opportunities</div>
     <h1 class="hero-name">
-      Your Name<span>Here.</span>
+      Your Name<span>Kwisatz Haderach</span>
     </h1>
     <p class="hero-title">
       Cybersecurity Professional
@@ -1271,12 +1271,12 @@
 
     // ── VISITOR COUNTER PLACEHOLDER ─────────────────────────────────
     // Phase 3: Replace this with real Azure Function call
-    // fetch('https://YOUR-FUNCTION.azurewebsites.net/api/HttpTrigger')
-    //   .then(r => r.json())
-    //   .then(data => {
-    //     document.getElementById('visitor-count').textContent = data.count;
-    //     document.getElementById('footer-count').textContent = data.count;
-    //   });
+    fetch('https://YOUR-FUNCTION.azurewebsites.net/api/HttpTrigger')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('visitor-count').textContent = data.count;
+        document.getElementById('footer-count').textContent = data.count;
+      });
 
     // Placeholder display
     document.getElementById('visitor-count').textContent = '—';
@@ -1302,7 +1302,7 @@
 
     // ── TYPING EFFECT ON HERO NAME ──────────────────────────────────
     // Optional: uncomment to enable typing effect
-    // const nameEl = document.querySelector('.hero-name');
+    const nameEl = document.querySelector('.hero-name');
   </script>
 </body>
 </html>
