@@ -126,32 +126,10 @@ jobs:
 
 **Latest successful run:**
 
-![CI/CD Pipeline Success](./assets/cicd-success.png)
-
 > Pipeline run: `Update .github #1` · Status: **Success** · Duration: **42s** · Trigger: `on: push` to `main`
 
 ---
 
-## 🧩 Project Structure
-
-```
-azure-cloud-resume/
-├── index.html                  # Resume website
-├── style.css                   # Styling
-├── counter.js                  # Visitor counter frontend logic
-├── resume-counter/             # Azure Function app
-│   ├── __init__.py             # HTTP trigger — reads/writes CosmosDB
-│   ├── function.json           # Function binding configuration
-│   └── requirements.txt        # Python dependencies
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          # GitHub Actions CI/CD pipeline
-├── assets/
-│   └── cicd-success.png        # Pipeline screenshot
-└── README.md
-```
-
----
 
 ## 🔧 Azure Resources Provisioned
 
@@ -176,7 +154,7 @@ Resource Group:     resume-rg
 
 **Problem:** Configuring the Azure Function to securely connect to CosmosDB without hardcoding credentials was more involved than expected. The Function App requires CosmosDB connection details passed as environment variables — getting the right combination of endpoint URI and primary key, and understanding where to set them in the Azure Portal took significant debugging.
 
-**Status:** Function App is provisioned and deployed. CosmosDB connection via environment variables is configured. Full end-to-end integration is still being validated — this is the active work in progress.
+**Status:** Function App is provisioned and deployed. CosmosDB connection via environment variables is configured. Full end-to-end integration is still being validated, this is the active work in progress.
 
 **What I learned:** Azure's identity and secrets model, specifically the difference between connection strings, managed identities, and API keys for CosmosDB is nuanced. The correct production approach uses Managed Identity rather than API keys, which eliminates the need to store credentials entirely. This is the next implementation step.
 
