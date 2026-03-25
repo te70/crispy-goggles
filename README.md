@@ -152,7 +152,7 @@ Resource Group:     resume-rg
 
 ### Challenge 1: Azure Function Authentication & Tokens
 
-**Problem:** Configuring the Azure Function to securely connect to CosmosDB without hardcoding credentials was more involved than expected. The Function App requires CosmosDB connection details passed as environment variables — getting the right combination of endpoint URI and primary key, and understanding where to set them in the Azure Portal took significant debugging.
+**Problem:** Configuring the Azure Function to securely connect to CosmosDB without hardcoding credentials was more involved than expected. The Function App requires CosmosDB connection details passed as environment variables, getting the right combination of endpoint URI and primary key, and understanding where to set them in the Azure Portal took significant debugging.
 
 **Status:** Function App is provisioned and deployed. CosmosDB connection via environment variables is configured. Full end-to-end integration is still being validated, this is the active work in progress.
 
